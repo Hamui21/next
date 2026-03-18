@@ -1,8 +1,19 @@
 import TaskList from "../components/TaskList";
+import { cacheLife } from "next/cache";
+
+async function getTasks() {
+    'use cache';
+    cacheLife('minutes');
+
+    console.log("запрос выполнился");
+
+    const res = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10",);
+
+    return res.json();
+}
 
 export default async function TaskPage() {
-    const res = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10");
-    const tasks = await res.json();
+    const tasks = await getTasks();
 
     return (
         <div>
